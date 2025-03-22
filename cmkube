@@ -1,0 +1,8 @@
+# Deploy a new Pod
+kubectl run my-pod --image=nginx --namespace=my-namespace
+# Expose the Pod as a Service
+kubectl expose pod my-pod --port=80 --namespace=my-namespace
+
+https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-ingress-em-
+
+https://kubernetes.io/docs/reference/kubectl/quick-reference/
