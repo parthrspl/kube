@@ -1,8 +1,28 @@
 # Deploy a new Pod
 kubectl run my-pod --image=nginx --namespace=my-namespace
+
 # Expose the Pod as a Service
 kubectl expose pod my-pod --port=80 --namespace=my-namespace
 
-https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-ingress-em-
+#Use the following command to create a namespace named web:
+kubectl create ns web
+
+#Use the following command to create a deployment named webapp:
+kubectl run webapp --image=linuxacademycontent/podofminerva:latest --port=80 --replicas=3 -n web
+
+https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#
 
 https://kubernetes.io/docs/reference/kubectl/quick-reference/
+
+
+#  NETWORKING
+iptables -L -t nat
+
+#Use the following command to create a temporary pod with a shell to its container:
+kubectl run busybox --image=busybox --rm -it --restart=Never -- sh
+
+#Use the following command (from the container’s shell) to send a request to the web pod:
+wget -O- &lt;pod_ip_address>:80
+
+#Use the following command to create the YAML for the service named web-service:
+kubectl expose deployment/webapp --port=80 --target-port=80 --type=NodePort -n web --dry-run -o yaml > web-service.yaml
