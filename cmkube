@@ -12,6 +12,12 @@ kubectl run webapp --image=linuxacademycontent/podofminerva:latest --port=80 --r
 
 kubectl config set-context --current --namespace=gg-name
 
+apt-get install kubeadm=1.20.1-00 kubelet=1.20.1-00 kubectl=1.20.1-00 --disableexcludes=kubernetes
+kubeadm upgrade apply 1.20.1 --etcd-upgrade=false
+systemctl daemon-reload
+systemctl restart kubelet
+kubectl uncordon master-1
+
 https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#
 
 https://kubernetes.io/docs/reference/kubectl/quick-reference/
