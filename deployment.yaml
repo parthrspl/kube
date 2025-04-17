@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment
+  labels:
+    app: my-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      volumes:
+        - name: shared-data
+          emptyDir: {}
+        - name: config-volume
+          configMap:
+            name: my-config
+      initContainers:
+        - name: init-setup
+          image: busybox
+          command: ['sh', '-c', 'echo Preparing files... && cp /config/app.conf /data/']
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+            - name: shared-data
+              mountPath: /data
+      containers:
+        - name: main-app
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          volumeMounts:
+            - name: shared-data
+              mountPath: /usr/share/nginx/html
+          envFrom:
+            - configMapRef:
+                name: my-config
